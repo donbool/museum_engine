@@ -57,11 +57,11 @@ ArtWork::ArtWork(string csvLine){
 		getline(ss, value, '"');
 		objectName += ',' + value;
 		getline(ss, value, ',');
-	}
-	getline(ss, title, ',');
+	} 
+	getline(ss, title, ','); //this is important to fix
 	if(title[0] == '"'){
 		title.erase(0,1);
-		getline(ss, value, '"');
+		getline(ss, value, '"'); //detecting ending quotes in csv file
 		title += ',' + value;
 		getline(ss, value, ',');
 	}
