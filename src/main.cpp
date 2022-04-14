@@ -12,8 +12,12 @@ int main(){
 
 	getline(input, line);
 	vector<ArtWork> first10;
-	//demo of the first 33 lines of the csv
-	for(int i = 0; i < 33; i++){
+	int x;
+	cin >> x;
+	for(int i = 0; i < x; i++){
+		getline(input, line);
+	}
+	for(int i = 0; i < 100000 - x; i++){
 		getline(input, line);
 		first10.push_back(ArtWork(line));	
 
@@ -28,9 +32,9 @@ int main(){
 		cout << first10.back().getArtistName() << endl;
 		cout << first10.back().getArtistNationality() << endl;
 		cout << first10.back().getObjectYear() << endl;
-		cout << first10.back().getMedium() << endl;
 		cout << first10.back().getCountry() << endl;
 		cout << first10.back().getLink() << endl;
+		cout << i+x << endl;
 	}
 	input.close();
 }
