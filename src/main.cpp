@@ -7,9 +7,9 @@ using namespace std;
 /*
 * Storing Artwork nodes into a BST and a B+ Tree
 *
-* Goal: Search via 3 separate values and compare the efficiency via clock and time complexity
+* Goal: Search via 2-3 separate values and compare the efficiency via clock and time complexity
 *
-* Required functions for trees: Insert, Search via ID, Search via Title, Search via Link
+* Required functions for trees: Insert, Search via Title, Search via Link
 */
 
 int main() {
@@ -25,20 +25,14 @@ int main() {
 	for(int i = 0; i < x; i++){
 		getline(input, line);
 	}
-	for(int i = 0; i < 100000 - x; i++){
+	for(int i = 0; i < 99993 - x; i++){
 		getline(input, line);
 		first10.push_back(ArtWork(line));	
 
 		cout << "==============================================" << endl;
 		cout << first10.back().getID() << endl;
-		cout << first10.back().isPublicDomain() << endl;
-		cout << first10.back().getDepartment() << endl;
-		cout << first10.back().getObjectName() << endl;
 		cout << first10.back().getTitle() << endl;
 		cout << first10.back().getCulture() << endl;
-		cout << first10.back().getPeriod() << endl;
-		cout << first10.back().getArtistName() << endl;
-		cout << first10.back().getArtistNationality() << endl;
 		cout << first10.back().getObjectYear() << endl;
 		cout << first10.back().getCountry() << endl;
 		cout << first10.back().getLink() << endl;
