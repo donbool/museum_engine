@@ -7,9 +7,9 @@ using namespace std;
 /*
 * Storing Artwork nodes into a BST and a B+ Tree
 *
-* Goal: Search via 2-3 separate values and compare the efficiency via clock and time complexity
+* Goal: Search via 3 separate values and compare the efficiency via clock and time complexity
 *
-* Required functions for trees: Insert, Search via Title, Search via Link
+* Required functions for trees: Insert, Search via ID, Search via Title, Search via Link
 */
 
 int main() {
