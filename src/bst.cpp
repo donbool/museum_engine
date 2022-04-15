@@ -46,86 +46,68 @@ class Node {
 class BST {
     private:
         Node* head = nullptr;
-        int height;
-        //Right rotate
-        //Left rotate   
 
     public:
-        Node* insertNode(Node* node, int id, string name); //building the AVL ->
-        //insert helper function
-        void searchID(Node* root, string id);
-        void searchName(Node* root, string name, vector <long>& ids);
+        Node* insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string link);
+        
+        void searchID(Node* root, string id, vector <string>& ids);
+        void searchTitle(Node* root, string title, vector <string>& ids);
+        void searchLink(Node* root, string link, vector <string>& ids);
 
         Node* returnRoot();
         void setRoot(Node* node);
 
         BST();
         BST(Node* node);
-        ~BST();
 };
 
-//insert each of the rows, artwork nodes, from the csv
-Node* BST::insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string country, string link) { //CHANGE THE VALUE ACCORDING TO THE CSV
+/**** insert each of the rows (artwork nodes) from the csv ****/
+Node* BST::insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string link) {
 
     if (node == nullptr) {
-        return new Node(value, value);
+        return new Node(id, objectName, title, culture, objectYear, link);
     }
-    else if (value == node->value) {
+    else if (id == node->id) {
     }
-    else if (value < node->value) {
-        node->left = insertNode(node->left, value, value);
+    else if (id < node->id) {
+        node->left = insertNode(node->left, id, objectName, title, culture, objectYear, link);
     }
     else {
-        node->right = insertNode(node->right, value, value);
+        node->right = insertNode(node->right, id, objectName, title, culture, objectYear, link);
     }
     return node;
 }
 
-/****** search for the 3 different values below *****
- * 
- * values (name, id) are to be changed
- * 
- */
-
-void BST::searchID(Node* root, string id) {
-
-    Node* search = root;
-
-    while (search != nullptr) {
-        if (search->id == id) {
-            cout << search->name << endl;
-            break;
-        } 
-        else if (search->id < id) {
-            search = search->left;
-        } 
-        else {
-            search = search->right;
-        }
-    }
-
-}
-
-void BST::searchName(Node* root, string name, vector <long>& ids) { //return anything that matches
+/****** search for the 3 different values below ******/
+void BST::searchID(Node* root, string id, vector <string>& ids) { //return anything that matches
 
     if (root != nullptr) {
-        if (root->name == name) {
+        if (root->id == id) {
             ids.push_back(root->id);
         }
-        searchName(root->left, name, ids);
-        searchName(root->right, name, ids);
+        searchID(root->left, id, ids);
+        searchID(root->right, id, ids);
     }
-
 }
 
-void BST::searchName(Node* root, string name, vector <long>& ids) { //return anything that matches
+void BST::searchTitle(Node* root, string title, vector <string>& ids) { //return anything that matches
 
     if (root != nullptr) {
-        if (root->name == name) {
+        if (root->title == title) {
             ids.push_back(root->id);
         }
-        searchName(root->left, name, ids);
-        searchName(root->right, name, ids);
+        searchTitle(root->left, title, ids);
+        searchTitle(root->right, title, ids);
     }
+}
 
+void BST::searchLink(Node* root, string link, vector <string>& ids) { //return anything that matches
+
+    if (root != nullptr) {
+        if (root->link == link) {
+            ids.push_back(root->id);
+        }
+        searchLink(root->left, link, ids);
+        searchLink(root->right, link, ids);
+    }
 }
