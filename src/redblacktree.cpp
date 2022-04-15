@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
 
 /* Values: 
@@ -8,10 +7,15 @@ using namespace std;
 			Culture, Object Year (avg), Link Resource
 */
 
+enum Color {RED, BLACK};
+
 class Node {
     public:
         Node* left;
         Node* right;
+        Node* parent;
+
+        bool color;
 
         string id;
 		string objectName;
@@ -23,6 +27,7 @@ class Node {
         Node() {
             left = nullptr;
             right = nullptr;
+            parent = nullptr;
             id = "";
             objectName = "";
             title = "";
@@ -43,26 +48,27 @@ class Node {
         }
 };
 
-class BST {
+class RedBlackTree {
     private:
-        Node* head = nullptr;
+        Node* root = nullptr;
 
     public:
-        Node* insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string link);
-        
+        Node* insertNodeBSTstyle(Node* node, string id, string objectName, string title, string culture, int objectYear, string link);
+        void rotateLeft(Node *&, Node *&);
+        void rotateRight(Node *&, Node *&);
+        void fixViolation(Node *&, Node *&);
+        void RedBlackTree::insert(const int &data)
+
         void searchID(Node* root, string id, vector <string>& ids);
         void searchTitle(Node* root, string title, vector <string>& ids);
         void searchLink(Node* root, string link, vector <string>& ids);
 
-        Node* returnRoot();
-        void setRoot(Node* node);
-
-        BST();
-        BST(Node* node);
+        RedBlackTree();
+        RedBlackTree(Node* node);
 };
 
 /**** insert each of the rows (artwork nodes) from the csv ****/
-Node* BST::insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string link) {
+Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string objectName, string title, string culture, int objectYear, string link) {
 
     if (node == nullptr) {
         return new Node(id, objectName, title, culture, objectYear, link);
@@ -78,8 +84,18 @@ Node* BST::insertNode(Node* node, string id, string objectName, string title, st
     return node;
 }
 
+void RedBlackTree::insert(const int &data) {
+    Node *pt = new Node(data);
+ 
+    // Do a normal BST insert
+    root = insertNodeBSTstyle(root, pt);
+ 
+    // fix Red Black Tree violations
+    fixViolation(root, pt);
+}
+
 /****** search for the 3 different values below ******/
-void BST::searchID(Node* root, string id, vector <string>& ids) { //return anything that matches
+void RedBlackTree::searchID(Node* root, string id, vector <string>& ids) { //return anything that matches
 
     if (root != nullptr) {
         if (root->id == id) {
@@ -90,7 +106,7 @@ void BST::searchID(Node* root, string id, vector <string>& ids) { //return anyth
     }
 }
 
-void BST::searchTitle(Node* root, string title, vector <string>& ids) { //return anything that matches
+void RedBlackTree::searchTitle(Node* root, string title, vector <string>& ids) { //return anything that matches
 
     if (root != nullptr) {
         if (root->title == title) {
@@ -101,7 +117,7 @@ void BST::searchTitle(Node* root, string title, vector <string>& ids) { //return
     }
 }
 
-void BST::searchLink(Node* root, string link, vector <string>& ids) { //return anything that matches
+void RedBlackTree::searchLink(Node* root, string link, vector <string>& ids) { //return anything that matches
 
     if (root != nullptr) {
         if (root->link == link) {
