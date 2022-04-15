@@ -4,9 +4,8 @@
 using namespace std;
 
 /* Values: 
-			Object Number,Object Name,Title,
-			Culture,Object Year (avg),
-			Country,Link Resource,
+			Object Number, Object Name, Title,
+			Culture, Object Year (avg), Link Resource
 */
 
 class Node {
@@ -19,15 +18,20 @@ class Node {
 		string title;
 		string culture;
 		int objectYear;
-		string country;
 		string link;
 
         Node() {
             left = nullptr;
             right = nullptr;
+            id = "";
+            objectName = "";
+            title = "";
+            culture = "";
+            objectYear = 0;
+            link = "";
         }
 
-        Node(string name, string id) {
+        Node(string id, string objectName, string title, string culture, int objectYear, string link) {
             left = nullptr;
             right = nullptr;
             this->id = id;
@@ -35,7 +39,6 @@ class Node {
             this->title = title;
             this->culture = culture;
             this->objectYear = objectYear;
-            this->country = country;
             this->link = link;
         }
 };

@@ -4,9 +4,8 @@
 using namespace std;
 
 /* Values: 
-			Object ID, Object Name, Title,
-			Culture, Object Year (avg),
-			Country, Link Resource,,,,
+			Object Number, Object Name, Title,
+			Culture, Object Year (avg), Link Resource
 */
 
 class ArtWork{
@@ -16,23 +15,16 @@ class ArtWork{
 		string title;
 		string culture;
 		int objectYear;
-		string country;
 		string link;
 
 	public:
 		ArtWork(string csvLine);
 		//Accessors
 		string getID();
-		bool isPublicDomain();
-		string getDepartment();
 		string getObjectName();
-		string getPeriod();
 		string getTitle();
 		string getCulture();
-		string getArtistName();
-		string getArtistNationality();
 		int getObjectYear();
-		string getCountry();
 		string getLink();
 };
 //takes line from csv, creates artwork obj
@@ -121,9 +113,6 @@ string ArtWork::getCulture(){
 }
 int ArtWork::getObjectYear(){
 	return objectYear;
-}
-string ArtWork::getCountry(){
-	return country;
 }
 string ArtWork::getLink(){
 	return link;
