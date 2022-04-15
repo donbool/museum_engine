@@ -27,7 +27,7 @@ class Node {
             right = nullptr;
         }
 
-        Node(string name, int id) {
+        Node(string name, string id) {
             left = nullptr;
             right = nullptr;
             this->id = id;
@@ -50,7 +50,7 @@ class BST {
     public:
         Node* insertNode(Node* node, int id, string name); //building the AVL ->
         //insert helper function
-        void searchID(Node* root, int id);
+        void searchID(Node* root, string id);
         void searchName(Node* root, string name, vector <long>& ids);
 
         Node* returnRoot();
@@ -62,7 +62,7 @@ class BST {
 };
 
 //insert each of the rows, artwork nodes, from the csv
-Node* BST::insertNode(Node* node, int value, string value) { //CHANGE THE VALUE ACCORDING TO THE CSV
+Node* BST::insertNode(Node* node, string id, string objectName, string title, string culture, int objectYear, string country, string link) { //CHANGE THE VALUE ACCORDING TO THE CSV
 
     if (node == nullptr) {
         return new Node(value, value);
@@ -84,7 +84,7 @@ Node* BST::insertNode(Node* node, int value, string value) { //CHANGE THE VALUE 
  * 
  */
 
-void BST::searchID(Node* root, int id) {
+void BST::searchID(Node* root, string id) {
 
     Node* search = root;
 
