@@ -1,13 +1,26 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
 using namespace std;
+
+/* Values: 
+			Object Number,Object Name,Title,
+			Culture,Object Year (avg),
+			Country,Link Resource,
+*/
 
 class Node {
     public:
         Node* left;
         Node* right;
+
+        string id;
+		string objectName;
+		string title;
+		string culture;
+		int objectYear;
+		string country;
+		string link;
 
         Node() {
             left = nullptr;
@@ -17,6 +30,13 @@ class Node {
         Node(string name, int id) {
             left = nullptr;
             right = nullptr;
+            this->id = id;
+            this->objectName = objectName;
+            this->title = title;
+            this->culture = culture;
+            this->objectYear = objectYear;
+            this->country = country;
+            this->link = link;
         }
 };
 

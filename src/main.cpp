@@ -4,6 +4,14 @@
 #include <vector>
 using namespace std;
 
+/*
+* Storing Artwork nodes into a BST and a B+ Tree
+*
+* Goal: Search via 2-3 separate values and compare the efficiency via clock and time complexity
+*
+* Required functions for trees: Insert, Search via Title, Search via Link
+*/
+
 int main() {
 	ifstream input;
 	string line;

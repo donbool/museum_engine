@@ -3,20 +3,22 @@
 #include <string>
 using namespace std;
 
+/* Values: 
+			Object ID, Object Name, Title,
+			Culture, Object Year (avg),
+			Country, Link Resource,,,,
+*/
+
 class ArtWork{
 	private:
 		string id;
-		bool publicDomain;
-		string department;
 		string objectName;
 		string title;
 		string culture;
-		string period;
-		string artistAlphaSort;
-		string artistNationality;
 		int objectYear;
 		string country;
 		string link;
+
 	public:
 		ArtWork(string csvLine);
 		//Accessors
@@ -108,29 +110,14 @@ ArtWork::ArtWork(string csvLine){
 string ArtWork::getID(){
 	return id;
 }
-bool ArtWork::isPublicDomain(){
-	return publicDomain;
-}
-string ArtWork::getDepartment(){
-	return department;
-}
 string ArtWork::getObjectName(){
 	return objectName;
-}
-string ArtWork::getPeriod(){
-	return period;
 }
 string ArtWork::getTitle(){
 	return title;
 }
 string ArtWork::getCulture(){
 	return culture;
-}
-string ArtWork::getArtistName(){
-	return artistAlphaSort;
-}
-string ArtWork::getArtistNationality(){
-	return artistNationality;
 }
 int ArtWork::getObjectYear(){
 	return objectYear;
