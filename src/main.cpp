@@ -100,3 +100,15 @@ int main() {
 		getline(cin, command);
 	}
 }
+//for directing commands
+/*vector <long> ids;
+    sprout.searchName(sprout.returnRoot(), name, ids);
+    if (ids.empty()) {
+                    cout << "unsuccessful" << endl;
+                }
+                else {
+                    for (int k = 0; k < ids.size(); k++){
+                        cout << to_string(ids[k]) << endl;
+                    }
+                }
+    */

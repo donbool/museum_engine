@@ -46,7 +46,7 @@ class RedBlackTree {
         void rotateLeft(Node *&root, Node *&pt);
         void rotateRight(Node *&root, Node *&pt);
         void fixViolation(Node *&root, Node *&pt);
-        void insert(ArtWork* piece);
+        void insert(ArtWork piece);
 
         void searchID(Node* root, string id, vector <string>& ids);
         void searchTitle(Node* root, string title, vector <string>& titles);
@@ -195,10 +195,10 @@ Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, stri
     return node;
 }
 
-void RedBlackTree::insert(ArtWork* piece) {
-    Node* pt = new Node(*piece);
+void RedBlackTree::insert(ArtWork piece) {
+    Node* pt = new Node(piece);
     // Do a normal BST insert
-    root = insertNodeBSTstyle(root, piece->getID(), piece->getTitle(), piece->getCulture(), piece->getObjectYear(), piece->getLink());
+    root = insertNodeBSTstyle(root, piece.getID(), piece.getTitle(), piece.getCulture(), piece.getObjectYear(), piece.getLink());
  
     // fix Red Black Tree violations
     fixViolation(root, pt);
@@ -208,67 +208,32 @@ void RedBlackTree::insert(ArtWork* piece) {
 void RedBlackTree::searchID(Node* root, string id, vector <string> &ids) { //return anything that matches
 
     if (root != nullptr) {
-        if (root->id == id) {
-            ids.push_back(root->id);
+        if (root->work.getID() == id) {
+            ids.push_back(root->work.getID());
         }
         searchID(root->left, id, ids);
         searchID(root->right, id, ids);
     }
-    /*vector <long> ids;
-    sprout.searchName(sprout.returnRoot(), name, ids);
-    if (ids.empty()) {
-                    cout << "unsuccessful" << endl;
-                }
-                else {
-                    for (int k = 0; k < ids.size(); k++){
-                        cout << to_string(ids[k]) << endl;
-                    }
-                }
-    */
 }
 
 void RedBlackTree::searchTitle(Node* root, string title, vector <string>& titles) { //return anything that matches
 
     if (root != nullptr) {
-        if (root->title == title) {
-            titles.push_back(root->title);
+        if (root->work.getTitle() == title) {
+            titles.push_back(root->work.getTitle());
         }
         searchTitle(root->left, title, titles);
         searchTitle(root->right, title, titles);
     }
-    /*vector <long> titles;
-    sprout.searchName(sprout.returnRoot(), name, titles);
-    if (titles.empty()) {
-                    cout << "unsuccessful" << endl;
-                }
-                else {
-                    for (int k = 0; k < titles.size(); k++){
-                        cout << titles(ids[k]) << endl;
-                    }
-                }
-    */
 }
 
 void RedBlackTree::searchLink(Node* root, string link, vector <string>& links) { //return anything that matches
 
     if (root != nullptr) {
-        if (root->link == link) {
-            links.push_back(root->link);
+        if (root->work.getLink() == link) {
+            links.push_back(root->work.getLink());
         }
         searchLink(root->left, link, links);
         searchLink(root->right, link, links);
     }
-
-    //for main:
-    /*vector <long> links;
-    sprout.searchName(sprout.returnRoot(), name, links);
-    if (links.empty()) {
-                    cout << "unsuccessful" << endl;
-                }
-                else {
-                    for (int k = 0; k < links.size(); k++){
-                        cout << links(ids[k]) << endl;
-                    }
-                }
-    */
 }
