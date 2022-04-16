@@ -1,5 +1,7 @@
 #include<iostream>
 #include "artwork.cpp"
+#include "splay.cpp"
+#include "redblacktree.cpp"
 #include <fstream>
 #include <vector>
 using namespace std;
@@ -35,7 +37,7 @@ using namespace std;
 
 int main() {
 	ifstream input;
-	string line;
+	string line, function, title, id, link;
 
 	input.open("artData.csv");
 
@@ -46,7 +48,7 @@ int main() {
 	for(int i = 0; i < x; i++){
 		getline(input, line);
 	}
-	for(int i = 0; i < 99993 - x; i++){
+	for(int i = 0; i < 100000; i++){
 		getline(input, line);
 		first10.push_back(ArtWork(line));	
 
