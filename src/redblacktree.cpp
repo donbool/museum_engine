@@ -3,7 +3,7 @@
 using namespace std;
 
 /* Values: 
-			Object Number, Object Name, Title,
+			Object Number, Title,
 			Culture, Object Year (avg), Link Resource
 */
 
@@ -18,10 +18,10 @@ class Node {
         bool color;
 
         string id;
-		string objectName;
 		string title;
 		string culture;
 		int objectYear;
+        string country;
 		string link;
 
         Node() {
@@ -29,7 +29,6 @@ class Node {
             right = nullptr;
             parent = nullptr;
             id = "";
-            objectName = "";
             title = "";
             culture = "";
             objectYear = 0;
@@ -40,10 +39,10 @@ class Node {
             left = nullptr;
             right = nullptr;
             this->id = id;
-            this->objectName = objectName;
             this->title = title;
             this->culture = culture;
             this->objectYear = objectYear;
+            this->country = country;
             this->link = link;
         }
 };
@@ -57,7 +56,7 @@ class RedBlackTree {
         void rotateLeft(Node *&, Node *&);
         void rotateRight(Node *&, Node *&);
         void fixViolation(Node *&, Node *&);
-        void RedBlackTree::insert(const int &data)
+        void RedBlackTree::insert(const int &data);
 
         void searchID(Node* root, string id, vector <string>& ids);
         void searchTitle(Node* root, string title, vector <string>& ids);
@@ -76,10 +75,10 @@ Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string objectName,
     else if (id == node->id) {
     }
     else if (id < node->id) {
-        node->left = insertNode(node->left, id, objectName, title, culture, objectYear, link);
+        node->left = insertNodeBSTstyle(node->left, id, objectName, title, culture, objectYear, link);
     }
     else {
-        node->right = insertNode(node->right, id, objectName, title, culture, objectYear, link);
+        node->right = insertNodeBSTstyle(node->right, id, objectName, title, culture, objectYear, link);
     }
     return node;
 }
