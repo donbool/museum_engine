@@ -1,5 +1,8 @@
 #include <iostream>
+#include "artwork.cpp"
 #include <string>
+#include <vector>
+
 using namespace std;
 
 /* Values: 
@@ -17,33 +20,20 @@ class Node {
 
         bool color;
 
-        string id;
-		string title;
-		string culture;
-		int objectYear;
-        string country;
-		string link;
+        ArtWork work;
 
         Node() {
             left = nullptr;
             right = nullptr;
             parent = nullptr;
-            id = "";
-            title = "";
-            culture = "";
-            objectYear = 0;
-            link = "";
+            work = ArtWork();
         }
 
-        Node(string id, string title, string culture, int objectYear, string link) {
+        Node(ArtWork piece){
             left = nullptr;
             right = nullptr;
-            this->id = id;
-            this->title = title;
-            this->culture = culture;
-            this->objectYear = objectYear;
-            this->country = country;
-            this->link = link;
+            parent = nullptr;
+            work = piece;
         }
 };
 
@@ -56,7 +46,7 @@ class RedBlackTree {
         void rotateLeft(Node *&root, Node *&pt);
         void rotateRight(Node *&root, Node *&pt);
         void fixViolation(Node *&root, Node *&pt);
-        void insert(Node* noder);
+        void insert(ArtWork* piece);
 
         void searchID(Node* root, string id, vector <string>& ids);
         void searchTitle(Node* root, string title, vector <string>& titles);
@@ -67,6 +57,7 @@ class RedBlackTree {
 
 };
 
+//Citation: Inspired by Geeks4Geeks
 void RedBlackTree::rotateLeft(Node *&root, Node *&pt) {
     Node *pt_right = pt->right;
  
@@ -191,11 +182,11 @@ void RedBlackTree::fixViolation(Node *&root, Node *&pt) {
 Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, string culture, int objectYear, string link) {
 
     if (node == nullptr) {
-        return new Node(id, title, culture, objectYear, link);
+        return new Node();
     }
-    else if (id == node->id) {
+    else if (id == node->work.getID()) {
     }
-    else if (id < node->id) {
+    else if (id < node->work.getID()) {
         node->left = insertNodeBSTstyle(node->left, id, title, culture, objectYear, link);
     }
     else {
@@ -204,17 +195,17 @@ Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, stri
     return node;
 }
 
-void RedBlackTree::insert(Node* noder) {
-    Node* pt = new Node(noder->id, noder->title, noder->culture, noder->objectYear, noder->link);
+void RedBlackTree::insert(ArtWork* piece) {
+    Node* pt = new Node(*piece);
     // Do a normal BST insert
-    root = insertNodeBSTstyle(root, pt->id, pt->title, pt->culture, pt->objectYear, pt->link);
+    root = insertNodeBSTstyle(root, piece->getID(), piece->getTitle(), piece->getCulture(), piece->getObjectYear(), piece->getLink());
  
     // fix Red Black Tree violations
     fixViolation(root, pt);
 }
 
 /****** search for the 3 different values below ******/
-void RedBlackTree::searchID(Node* root, string id, vector <string>& ids) { //return anything that matches
+void RedBlackTree::searchID(Node* root, string id, vector <string> &ids) { //return anything that matches
 
     if (root != nullptr) {
         if (root->id == id) {
