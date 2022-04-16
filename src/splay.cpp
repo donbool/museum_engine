@@ -8,8 +8,6 @@ class Node {
         Node* right;
         Node* parent;
 
-        bool color;
-
         string id;
 		string title;
 		string culture;
@@ -40,10 +38,10 @@ class Node {
         }
 };
  
-Node* newNode(int key)
+Node* newNode(string key)
 {
     Node* node = new Node();
-    node->key = key;
+    node->id = key;
     node->left = node->right = NULL;
     return (node);
 }
@@ -70,40 +68,37 @@ Node *leftRotate(Node *x)
     return y;
 }
  
-// This function brings the key at
-// root if key is present in tree.
-// If key is not present, then it
-// brings the last accessed item at
-// root. This function modifies the
-// tree and returns the new root
-Node* splay(Node *root, int key) {
+// This function brings the key at root if key is present in tree.
+// If key is not present, then it brings the last accessed item at root. 
+// This function modifies the tree and returns the new root
+Node* splay(Node *root, string id) {
     // Base cases: root is NULL or
     // key is present at root
-    if (root == NULL || root->key == key)
+    if (root == NULL || root->id == id)
         return root;
  
     // Key lies in left subtree
-    if (root->key > key)
+    if (root->id > id)
     {
         // Key is not in tree, we are done
         if (root->left == NULL) return root;
  
         // Zig-Zig (Left Left)
-        if (root->left->key > key)
+        if (root->left->id > id)
         {
             // First recursively bring the
             // key as root of left-left
-            root->left->left = splay(root->left->left, key);
+            root->left->left = splay(root->left->left, id);
  
             // Do first rotation for root,
             // second rotation is done after else
             root = rightRotate(root);
         }
-        else if (root->left->key < key) // Zig-Zag (Left Right)
+        else if (root->left->id < id) // Zig-Zag (Left Right)
         {
             // First recursively bring
             // the key as root of left-right
-            root->left->right = splay(root->left->right, key);
+            root->left->right = splay(root->left->right, id);
  
             // Do first rotation for root->left
             if (root->left->right != NULL)
@@ -119,20 +114,20 @@ Node* splay(Node *root, int key) {
         if (root->right == NULL) return root;
  
         // Zag-Zig (Right Left)
-        if (root->right->key > key)
+        if (root->right->id > id)
         {
             // Bring the key as root of right-left
-            root->right->left = splay(root->right->left, key);
+            root->right->left = splay(root->right->left, id);
  
             // Do first rotation for root->right
             if (root->right->left != NULL)
                 root->right = rightRotate(root->right);
         }
-        else if (root->right->key < key)// Zag-Zag (Right Right)
+        else if (root->right->id < id)// Zag-Zag (Right Right)
         {
             // Bring the key as root of
             // right-right and do first rotation
-            root->right->right = splay(root->right->right, key);
+            root->right->right = splay(root->right->right, id);
             root = leftRotate(root);
         }
  
@@ -141,15 +136,17 @@ Node* splay(Node *root, int key) {
     }
 }
 
-Node *insert(Node *root, int k) {
-    // Simple Case: If tree is empty
-    if (root == NULL) return newNode(k);
- 
+Node *insert(Node *root, string k) {
+
+    if (root == NULL) {
+        return newNode(k); //if tree empty
+    }
+
     // Bring the closest leaf node to root
     root = splay(root, k);
  
     // If key is already present, then return
-    if (root->key == k) return root;
+    if (root->id == k) return root;
  
     // Otherwise allocate memory for new node
     Node* newnode = newNode(k);
@@ -157,7 +154,7 @@ Node *insert(Node *root, int k) {
     // If root's key is greater, make
     // root as right child of newnode
     // and copy the left child of root to newnode
-    if (root->key > k)
+    if (root->id > k)
     {
         newnode->right = root;
         newnode->left = root->left;
@@ -181,6 +178,14 @@ Node *insert(Node *root, int k) {
 // Note that this function returns the
 // new root of Splay Tree. If key is
 // present in tree then, it is moved to root.
-Node* search(Node *root, int key) {
-    return splay(root, key);
+Node* searchID(Node *root, string id) {
+    return splay(root, id);
+}
+
+Node* searchTitle(Node *root, string title) {
+    return splay(root, title);
+}
+
+Node* searchLink(Node *root, string link) {
+    return splay(root, link);
 }
