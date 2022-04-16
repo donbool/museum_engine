@@ -19,6 +19,7 @@ class ArtWork{
 		string link;
 
 	public:
+		ArtWork();
 		ArtWork(string csvLine);
 		//Accessors
 		string getID();
@@ -29,6 +30,14 @@ class ArtWork{
 		string getCountry();
 		string getLink();
 };
+ArtWork::ArtWork(){
+	id = "";
+	title = "";
+	culture = "";
+	objectYear = 0;
+	country = "";
+	link = "";
+}
 //takes line from csv, creates artwork obj
 ArtWork::ArtWork(string csvLine){
 	istringstream ss(csvLine);
