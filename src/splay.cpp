@@ -1,50 +1,33 @@
 #include <iostream>
 #include <string>
+#include "artwork.cpp"
+#include <string>
+
 using namespace std;
 
 class Node {
-    public:
-        Node* left;
-        Node* right;
-        Node* parent;
+public:
+    Node* left;
+    Node* right;
+    Node* parent;
 
-        string id;
-		string title;
-		string culture;
-		int objectYear;
-        string country;
-		string link;
+    ArtWork work;
 
-        Node() {
-            left = nullptr;
-            right = nullptr;
-            parent = nullptr;
-            id = "";
-            title = "";
-            culture = "";
-            objectYear = 0;
-            country = "";
-            link = "";
-        }
+    Node() {
+        left = nullptr;
+        right = nullptr;
+        parent = nullptr;
+        work = ArtWork();
+    }
 
-        Node(string id, string objectName, string title, string culture, int objectYear, string link) {
-            left = nullptr;
-            right = nullptr;
-            this->id = id;
-            this->title = title;
-            this->culture = culture;
-            this->objectYear = objectYear;
-            this->link = link;
-        }
+    Node(ArtWork piece){
+        left = nullptr;
+        right = nullptr;
+        parent = nullptr;
+        work = piece;
+    }
 };
- 
-Node* newNode(string key)
-{
-    Node* node = new Node();
-    node->id = key;
-    node->left = node->right = NULL;
-    return (node);
-}
+
  
 // A utility function to right
 // rotate subtree rooted with y
@@ -136,28 +119,29 @@ Node* splay(Node *root, string id) {
     }
 }
 
-Node *insert(Node *root, string k) {
+Node *insert(Node *root, ArtWork piece) {
 
     if (root == NULL) {
-        return newNode(k); //if tree empty
+        Node* pt = new Node(piece);
+        return pt; //if tree empty
     }
 
     // Bring the closest leaf node to root
-    root = splay(root, k);
+    root = splay(root, piece.getID());
  
     // If key is already present, then return
     if (root->id == k) return root;
  
     // Otherwise allocate memory for new node
-    Node* newnode = newNode(k);
+    Node* pt = new Node(piece);
  
     // If root's key is greater, make
     // root as right child of newnode
     // and copy the left child of root to newnode
     if (root->id > k)
     {
-        newnode->right = root;
-        newnode->left = root->left;
+        pt->right = root;
+        pt->left = root->left;
         root->left = NULL;
     }
  
@@ -166,12 +150,12 @@ Node *insert(Node *root, string k) {
     // and copy the right child of root to newnode
     else
     {
-        newnode->left = root;
-        newnode->right = root->right;
+        pt->left = root;
+        pt->right = root->right;
         root->right = NULL;
     }
  
-    return newnode; // newnode becomes new root
+    return pt; // pt becomes new root
 }
  
 // The search function for Splay tree.
