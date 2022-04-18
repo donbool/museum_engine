@@ -128,17 +128,16 @@ Node *insert(Node *root, ArtWork piece) {
 
     // Bring the closest leaf node to root
     root = splay(root, piece.getID());
- 
+    ArtWork rootWork = root->work;
     // If key is already present, then return
-    if (root->id == k) return root;
+    if (root->work == piece) return root;
  
     // Otherwise allocate memory for new node
     Node* pt = new Node(piece);
- 
     // If root's key is greater, make
     // root as right child of newnode
     // and copy the left child of root to newnode
-    if (root->id > k)
+    if (rootWork.getID() > piece)
     {
         pt->right = root;
         pt->left = root->left;
@@ -173,3 +172,8 @@ Node* searchTitle(Node *root, string title) {
 Node* searchLink(Node *root, string link) {
     return splay(root, link);
 }
+/* considering a splay tree works like any other BST with the priority of frequency, we need to construct three trees:
+ * 1. ranks id
+ * 2. ranks title
+ * 3. ranks link
+ * Since each piece of data in the artwork object is different, the strings have differing values and cannot be used interchangeably in searching methods
