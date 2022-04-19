@@ -54,20 +54,21 @@ Node *leftRotate(Node *x)
 // This function brings the key at root if key is present in tree.
 // If key is not present, then it brings the last accessed item at root. 
 // This function modifies the tree and returns the new root
-Node* splay(Node *root, string id) {
+Node* splay(Node *root, string id, string rootID) {
     // Base cases: root is NULL or
     // key is present at root
-    if (root == NULL || root->id == id)
+    ArtWork rootWork = root->work;
+    if (root == NULL || rootWork.getID() == id)
         return root;
  
     // Key lies in left subtree
-    if (root->id > id)
+    if (rootWork.getID() > id)
     {
         // Key is not in tree, we are done
         if (root->left == NULL) return root;
  
         // Zig-Zig (Left Left)
-        if (root->left->id > id)
+        if (root->left->work->getID() > id)
         {
             // First recursively bring the
             // key as root of left-left
@@ -77,7 +78,7 @@ Node* splay(Node *root, string id) {
             // second rotation is done after else
             root = rightRotate(root);
         }
-        else if (root->left->id < id) // Zig-Zag (Left Right)
+        else if (root->left->work->getID() < id) // Zig-Zag (Left Right)
         {
             // First recursively bring
             // the key as root of left-right
@@ -97,24 +98,21 @@ Node* splay(Node *root, string id) {
         if (root->right == NULL) return root;
  
         // Zag-Zig (Right Left)
-        if (root->right->id > id)
+        if (root->right->work.getID() > id)
         {
-            // Bring the key as root of right-left
             root->right->left = splay(root->right->left, id);
  
             // Do first rotation for root->right
             if (root->right->left != NULL)
                 root->right = rightRotate(root->right);
         }
-        else if (root->right->id < id)// Zag-Zag (Right Right)
+        else if (root->right->work->getID() < id)// Zag-Zag (Right Right)
         {
-            // Bring the key as root of
-            // right-right and do first rotation
             root->right->right = splay(root->right->right, id);
             root = leftRotate(root);
         }
- 
-        // Do second rotation for root
+
+        Do second rotation for root//
         return (root->right == NULL)? root: leftRotate(root);
     }
 }
