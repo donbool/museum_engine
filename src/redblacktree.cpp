@@ -57,6 +57,10 @@ class RedBlackTree {
 
 };
 
+RedBlackTree::RedBlackTree() {
+    root = nullptr;
+}
+
 //Citation: Inspired by Geeks4Geeks
 void RedBlackTree::rotateLeft(Node *&root, Node *&pt) {
     Node *pt_right = pt->right;
@@ -111,14 +115,8 @@ void RedBlackTree::fixViolation(Node *&root, Node *&pt) {
     while ((pt != root) && (pt->color != BLACK) && (pt->parent->color == RED)) {
         parent_pt = pt->parent;
         grand_parent_pt = pt->parent->parent;
-        /*  Case : A
-            Parent of pt is left child
-            of Grand-parent of pt */
         if (parent_pt == grand_parent_pt->left) {
             Node *uncle_pt = grand_parent_pt->right;
-            /* Case : 1
-               The uncle of pt is also red
-               Only Recoloring required */
             if (uncle_pt != NULL && uncle_pt->color == RED) {
                 grand_parent_pt->color = RED;
                 parent_pt->color = BLACK;
@@ -126,49 +124,33 @@ void RedBlackTree::fixViolation(Node *&root, Node *&pt) {
                 pt = grand_parent_pt;
             }
             else {
-                /* Case : 2
-                   pt is right child of its parent
-                   Left-rotation required */
                 if (pt == parent_pt->right) {
                     rotateLeft(root, parent_pt);
                     pt = parent_pt;
                     parent_pt = pt->parent;
                 }
-                /* Case : 3
-                   pt is left child of its parent
-                   Right-rotation required */
                 rotateRight(root, grand_parent_pt);
                 swap(parent_pt->color,
                            grand_parent_pt->color);
                 pt = parent_pt;
             }
         }
-        /* Case : B
-           Parent of pt is right child
-           of Grand-parent of pt */
         else {
             Node *uncle_pt = grand_parent_pt->left;
-            /*  Case : 1
-                The uncle of pt is also red
-                Only Recoloring required */
+
             if ((uncle_pt != NULL) && (uncle_pt->color == RED)) {
                 grand_parent_pt->color = RED;
                 parent_pt->color = BLACK;
                 uncle_pt->color = BLACK;
                 pt = grand_parent_pt;
             } else {
-                /* Case : 2
-                   pt is left child of its parent
-                   Right-rotation required */
+
                 if (pt == parent_pt->left) {
                     rotateRight(root, parent_pt);
                     pt = parent_pt;
                     parent_pt = pt->parent;
                 }
- 
-                /* Case : 3
-                   pt is right child of its parent
-                   Left-rotation required */
+
                 rotateLeft(root, grand_parent_pt);
                 swap(parent_pt->color,grand_parent_pt->color);
                 pt = parent_pt;
@@ -178,7 +160,6 @@ void RedBlackTree::fixViolation(Node *&root, Node *&pt) {
     root->color = BLACK;
 }
 
-/**** insert each of the rows (artwork nodes) from the csv ****/
 Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, string culture, int objectYear, string link) {
 
     if (node == nullptr) {
@@ -197,14 +178,10 @@ Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, stri
 
 void RedBlackTree::insert(ArtWork piece) {
     Node* pt = new Node(piece);
-    // Do a normal BST insert
     root = insertNodeBSTstyle(root, piece.getID(), piece.getTitle(), piece.getCulture(), piece.getObjectYear(), piece.getLink());
- 
-    // fix Red Black Tree violations
     fixViolation(root, pt);
 }
 
-/****** search for the 3 different values below ******/
 void RedBlackTree::searchID(Node* root, string id, vector <string> &ids) { //return anything that matches
 
     if (root != nullptr) {
