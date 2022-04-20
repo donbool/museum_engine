@@ -28,292 +28,318 @@ public:
     }
 };
 
-struct SplayTree {
-    Node* root = nullptr;
-    Node* getRoot(){return root;}
-    SplayTree()
-    Node *rightRotate(Node *x)
-    {
-        Node *y = x->left;
-        x->left = y->right;
-        y->right = x;
-        return y;
-    }
+class SplayTree {
+    Node* rootID = nullptr;
+    Node* rootTitle = nullptr;
+    Node* rootLink = nullptr;
+public:
+    Node* getRootID(){return rootID;}
+    Node* getRootTitle(){return rootTitle;}
+    Node* getRootLink(){return rootLink;}
 
-// A utility function to left
-// rotate subtree rooted with x
-// See the diagram given above.
-    Node *leftRotate(Node *x)
+    SplayTree();
+    Node *rightRotate(Node *root)
     {
-        Node *y = x->right;
-        x->right = y->left;
-        y->left = x;
-        return y;
+        Node *temp = root->left;
+        root->left = temp->right;
+        temp->right = root;
+        return temp;
     }
-
-// This function brings the key at root if key is present in tree.
-// If key is not present, then it brings the last accessed item at root.
-// This function modifies the tree and returns the new root
-    Node* splay(Node *root, string id, string rootID) {
-        // Base cases: root is NULL or
-        // key is present at root
+    Node *leftRotate(Node *root)
+    {
+        Node *temp = root->right;
+        root->right = temp->left;
+        temp->left = root;
+        return temp;
+    }
+    Node* splayID(Node *root, string id) {
         ArtWork rootWork = root->work;
-        if (root == NULL || rootWork.getID() == id)
+        if (root == nullptr || rootWork.getID() == id)
             return root;
 
-        // Key lies in left subtree
         if (rootWork.getID() > id)
         {
-            // Key is not in tree, we are done
-            if (root->left == NULL) return root;
+            if (root->left == nullptr) return root;
 
-            // Zig-Zig (Left Left)
-            if (root->left->work->getID() > id)
+            if (root->left->work.getID() > id)
             {
                 // First recursively bring the
                 // key as root of left-left
-                root->left->left = splay(root->left->left, id);
+                root->left->left = splayID(root->left->left, id);
 
                 // Do first rotation for root,
                 // second rotation is done after else
                 root = rightRotate(root);
             }
-            else if (root->left->work->getID() < id) // Zig-Zag (Left Right)
+            else if (root->left->work.getID() < id) // Zig-Zag (Left Right)
             {
                 // First recursively bring
                 // the key as root of left-right
-                root->left->right = splay(root->left->right, id);
+                root->left->right = splayID(root->left->right, id);
 
                 // Do first rotation for root->left
-                if (root->left->right != NULL)
+                if (root->left->right != nullptr)
                     root->left = leftRotate(root->left);
             }
 
             // Do second rotation for root
-            return (root->left == NULL)? root: rightRotate(root);
+            return (root->left == nullptr)? root: rightRotate(root);
         }
         else // Key lies in right subtree
         {
             // Key is not in tree, we are done
-            if (root->right == NULL) return root;
+            if (root->right == nullptr) return root;
 
             // Zag-Zig (Right Left)
             if (root->right->work.getID() > id)
             {
-                root->right->left = splay(root->right->left, id);
+                root->right->left = splayID(root->right->left, id);
 
                 // Do first rotation for root->right
-                if (root->right->left != NULL)
+                if (root->right->left != nullptr)
                     root->right = rightRotate(root->right);
             }
-            else if (root->right->work->getID() < id)// Zag-Zag (Right Right)
+            else if (root->right->work.getID() < id)// Zag-Zag (Right Right)
             {
-                root->right->right = splay(root->right->right, id);
+                root->right->right = splayID(root->right->right, id);
                 root = leftRotate(root);
             }
 
-            Do second rotation for root//
-            return (root->right == NULL)? root: leftRotate(root);
+            return (root->right == nullptr)? root: leftRotate(root);
+        }
+    }
+    Node* splayTitle(Node *root, string title) {
+        ArtWork rootWork = root->work;
+        if (root == nullptr || rootWork.getTitle() == title)
+            return root;
+
+        if (rootWork.getTitle() > title)
+        {
+            if (root->left == nullptr) return root;
+
+            if (root->left->work.getTitle() > title)
+            {
+                // First recursively bring the
+                // key as root of left-left
+                root->left->left = splayTitle(root->left->left, title);
+
+                // Do first rotation for root,
+                // second rotation is done after else
+                root = rightRotate(root);
+            }
+            else if (root->left->work.getTitle() < title) // Zig-Zag (Left Right)
+            {
+                // First recursively bring
+                // the key as root of left-right
+                root->left->right = splayTitle(root->left->right, title);
+
+                // Do first rotation for root->left
+                if (root->left->right != nullptr)
+                    root->left = leftRotate(root->left);
+            }
+
+            // Do second rotation for root
+            return (root->left == nullptr)? root: rightRotate(root);
+        }
+        else // Key lies in right subtree
+        {
+            // Key is not in tree, we are done
+            if (root->right == nullptr) return root;
+
+            // Zag-Zig (Right Left)
+            if (root->right->work.getTitle() > title)
+            {
+                root->right->left = splayTitle(root->right->left, title);
+
+                // Do first rotation for root->right
+                if (root->right->left != nullptr)
+                    root->right = rightRotate(root->right);
+            }
+            else if (root->right->work.getTitle() < title)// Zag-Zag (Right Right)
+            {
+                root->right->right = splayTitle(root->right->right, title);
+                root = leftRotate(root);
+            }
+
+            return (root->right == nullptr)? root: leftRotate(root);
+        }
+    }
+    Node* splayLink(Node *root, string link) {
+        ArtWork rootWork = root->work;
+        if (root == nullptr || rootWork.getLink() == link)
+            return root;
+
+        if (rootWork.getLink() > link)
+        {
+            if (root->left == nullptr) return root;
+
+            if (root->left->work.getLink() > link)
+            {
+                // First recursively bring the
+                // key as root of left-left
+                root->left->left = splayLink(root->left->left, link);
+
+                // Do first rotation for root,
+                // second rotation is done after else
+                root = rightRotate(root);
+            }
+            else if (root->left->work.getLink() < link) // Zig-Zag (Left Right)
+            {
+                // First recursively bring
+                // the key as root of left-right
+                root->left->right = splayLink(root->left->right, link);
+
+                // Do first rotation for root->left
+                if (root->left->right != nullptr)
+                    root->left = leftRotate(root->left);
+            }
+
+            // Do second rotation for root
+            return (root->left == nullptr)? root: rightRotate(root);
+        }
+        else // Key lies in right subtree
+        {
+            // Key is not in tree, we are done
+            if (root->right == nullptr) return root;
+
+            // Zag-Zig (Right Left)
+            if (root->right->work.getLink() > link)
+            {
+                root->right->left = splayLink(root->right->left, link);
+
+                // Do first rotation for root->right
+                if (root->right->left != nullptr)
+                    root->right = rightRotate(root->right);
+            }
+            else if (root->right->work.getLink() < link)// Zag-Zag (Right Right)
+            {
+                root->right->right = splayLink(root->right->right, link);
+                root = leftRotate(root);
+            }
+
+            return (root->right == nullptr)? root: leftRotate(root);
         }
     }
 
-    Node *insert(Node *root, ArtWork piece) {
+    Node *insertID(Node *root, ArtWork piece) {
 
-        if (root == NULL) {
+        if (root == nullptr) {
             Node* pt = new Node(piece);
             return pt; //if tree empty
         }
 
         // Bring the closest leaf node to root
-        root = splay(root, piece.getID());
+        root = splayID(root, piece.getID());
         ArtWork rootWork = root->work;
         // If key is already present, then return
-        if (root->work == piece) return root;
+        if (root->work.getID() == piece.getID()) return root;
 
         // Otherwise allocate memory for new node
         Node* pt = new Node(piece);
         // If root's key is greater, make
         // root as right child of newnode
         // and copy the left child of root to newnode
-        if (rootWork.getID() > piece)
+        if (rootWork.getID() > piece.getID())
         {
             pt->right = root;
             pt->left = root->left;
-            root->left = NULL;
+            root->left = nullptr;
         }
 
-            // If root's key is smaller, make
-            // root as left child of newnode
-            // and copy the right child of root to newnode
         else
         {
             pt->left = root;
             pt->right = root->right;
-            root->right = NULL;
+            root->right = nullptr;
+        }
+
+        return pt; // pt becomes new root
+    }
+    Node *insertTitle(Node *root, ArtWork piece) {
+
+        if (root == nullptr) {
+            Node* pt = new Node(piece);
+            return pt; //if tree empty
+        }
+
+        // Bring the closest leaf node to root
+        root = splayTitle(root, piece.getTitle());
+        ArtWork rootWork = root->work;
+        // If key is already present, then return
+        if (root->work.getTitle() == piece.getTitle()) return root;
+
+        // Otherwise allocate memory for new node
+        Node* pt = new Node(piece);
+        // If root's key is greater, make
+        // root as right child of newnode
+        // and copy the left child of root to newnode
+        if (rootWork.getTitle() > piece.getTitle())
+        {
+            pt->right = root;
+            pt->left = root->left;
+            root->left = nullptr;
+        }
+
+        else
+        {
+            pt->left = root;
+            pt->right = root->right;
+            root->right = nullptr;
+        }
+
+        return pt; // pt becomes new root
+    }
+    Node *insertLink(Node *root, ArtWork piece) {
+
+        if (root == nullptr) {
+            Node* pt = new Node(piece);
+            return pt; //if tree empty
+        }
+
+        // Bring the closest leaf node to root
+        root = splayLink(root, piece.getLink());
+        ArtWork rootWork = root->work;
+        // If key is already present, then return
+        if (root->work.getLink() == piece.getLink()) return root;
+
+        // Otherwise allocate memory for new node
+        Node* pt = new Node(piece);
+        // If root's key is greater, make
+        // root as right child of newnode
+        // and copy the left child of root to newnode
+        if (rootWork.getLink() > piece.getLink())
+        {
+            pt->right = root;
+            pt->left = root->left;
+            root->left = nullptr;
+        }
+
+        else
+        {
+            pt->left = root;
+            pt->right = root->right;
+            root->right = nullptr;
         }
 
         return pt; // pt becomes new root
     }
 
-// The search function for Splay tree.
-// Note that this function returns the
-// new root of Splay Tree. If key is
-// present in tree then, it is moved to root.
     Node* searchID(Node *root, string id) {
-        return splay(root, id);
+        return splayID(root, id);
     }
 
     Node* searchTitle(Node *root, string title) {
-        return splay(root, title);
+        return splayTitle(root, title);
     }
 
     Node* searchLink(Node *root, string link) {
-        return splay(root, link);
+        return splayLink(root, link);
     }
 };
-// A utility function to right
-// rotate subtree rooted with y
-// See the diagram given above.
-Node *rightRotate(Node *x)
-{
-    Node *y = x->left;
-    x->left = y->right;
-    y->right = x;
-    return y;
-}
 
-// A utility function to left
-// rotate subtree rooted with x
-// See the diagram given above.
-Node *leftRotate(Node *x)
-{
-    Node *y = x->right;
-    x->right = y->left;
-    y->left = x;
-    return y;
-}
-
-// This function brings the key at root if key is present in tree.
-// If key is not present, then it brings the last accessed item at root.
-// This function modifies the tree and returns the new root
-Node* splay(Node *root, string id, string rootID) {
-    // Base cases: root is NULL or
-    // key is present at root
-    ArtWork rootWork = root->work;
-    if (root == NULL || rootWork.getID() == id)
-        return root;
-
-    // Key lies in left subtree
-    if (rootWork.getID() > id)
-    {
-        // Key is not in tree, we are done
-        if (root->left == NULL) return root;
-
-        // Zig-Zig (Left Left)
-        if (root->left->work->getID() > id)
-        {
-            // First recursively bring the
-            // key as root of left-left
-            root->left->left = splay(root->left->left, id);
-
-            // Do first rotation for root,
-            // second rotation is done after else
-            root = rightRotate(root);
-        }
-        else if (root->left->work->getID() < id) // Zig-Zag (Left Right)
-        {
-            // First recursively bring
-            // the key as root of left-right
-            root->left->right = splay(root->left->right, id);
-
-            // Do first rotation for root->left
-            if (root->left->right != NULL)
-                root->left = leftRotate(root->left);
-        }
-
-        // Do second rotation for root
-        return (root->left == NULL)? root: rightRotate(root);
-    }
-    else // Key lies in right subtree
-    {
-        // Key is not in tree, we are done
-        if (root->right == NULL) return root;
-
-        // Zag-Zig (Right Left)
-        if (root->right->work.getID() > id)
-        {
-            root->right->left = splay(root->right->left, id);
-
-            // Do first rotation for root->right
-            if (root->right->left != NULL)
-                root->right = rightRotate(root->right);
-        }
-        else if (root->right->work->getID() < id)// Zag-Zag (Right Right)
-        {
-            root->right->right = splay(root->right->right, id);
-            root = leftRotate(root);
-        }
-
-        Do second rotation for root//
-        return (root->right == NULL)? root: leftRotate(root);
-    }
-}
-
-Node *insert(Node *root, ArtWork piece) {
-
-    if (root == NULL) {
-        Node* pt = new Node(piece);
-        return pt; //if tree empty
-    }
-
-    // Bring the closest leaf node to root
-    root = splay(root, piece.getID());
-    ArtWork rootWork = root->work;
-    // If key is already present, then return
-    if (root->work == piece) return root;
-
-    // Otherwise allocate memory for new node
-    Node* pt = new Node(piece);
-    // If root's key is greater, make
-    // root as right child of newnode
-    // and copy the left child of root to newnode
-    if (rootWork.getID() > piece)
-    {
-        pt->right = root;
-        pt->left = root->left;
-        root->left = NULL;
-    }
-
-    // If root's key is smaller, make
-    // root as left child of newnode
-    // and copy the right child of root to newnode
-    else
-    {
-        pt->left = root;
-        pt->right = root->right;
-        root->right = NULL;
-    }
-
-    return pt; // pt becomes new root
-}
-
-// The search function for Splay tree.
-// Note that this function returns the
-// new root of Splay Tree. If key is
-// present in tree then, it is moved to root.
-Node* searchID(Node *root, string id) {
-    return splay(root, id);
-}
-
-Node* searchTitle(Node *root, string title) {
-    return splay(root, title);
-}
-
-Node* searchLink(Node *root, string link) {
-    return splay(root, link);
-}
 /* considering a splay tree works like any other BST with the priority of frequency, we need to construct three trees:
  * 1. ranks id
  * 2. ranks title
  * 3. ranks link
  * Since each piece of data in the artwork object is different, the strings have differing values and cannot be used interchangeably in searching methods
+ */
