@@ -1,7 +1,6 @@
 #include<iostream>
-#include "artwork.cpp"
 //#include "splay.cpp"
-//#include "redblacktree.cpp"
+#include "redblacktree.cpp"
 #include <fstream>
 #include <vector>
 #include <chrono>
@@ -36,7 +35,7 @@ using namespace std;
 
 * Create PDF report!
 *****/
-void parseInput(string input, vector<ArtWork>& tree){
+void parseInput(string input, RedBlackTree& tree){
 	stringstream ss(input);
 	vector<string> fullCommand;
 	
@@ -68,7 +67,7 @@ void parseInput(string input, vector<ArtWork>& tree){
 		cout << "recommending" << endl;
 	}
 }
-void initRBT(vector<ArtWork>& tree){
+void initRBT(RedBlackTree& tree){
 	ifstream input;
 	string line;
 
@@ -78,8 +77,9 @@ void initRBT(vector<ArtWork>& tree){
 	auto start = chrono::high_resolution_clock::now();
 	int count = 0;
 	while(getline(input, line)){
+		cout << count << endl;
 		count++;
-		tree.push_back(ArtWork(line));//tree.insert(ArtWork(line));
+		tree.insert(ArtWork(line));
 	}
 	auto stop = chrono::high_resolution_clock::now();
 	input.close();
@@ -90,13 +90,13 @@ void initRBT(vector<ArtWork>& tree){
 int main() {
 	cout << "Welcome to the Museum Engine" << endl;
 
-	vector<ArtWork> dummyContainer;
-	initRBT(dummyContainer);
+	RedBlackTree RBT;
+	initRBT(RBT);
 
 	string command;
 	getline(cin, command);
 	while(command != "quit"){
-		parseInput(command, dummyContainer);
+		parseInput(command, RBT);
 		getline(cin, command);
 	}
 }
