@@ -42,7 +42,7 @@ class RedBlackTree {
         Node* root = nullptr;
 
     public:
-        Node* insertNodeBSTstyle(Node* node, string id, string title, string culture, int objectYear, string link);
+        Node* BSTInsertID(Node* root, Node* pt);
         void rotateLeft(Node *&root, Node *&pt);
         void rotateRight(Node *&root, Node *&pt);
         void fixViolation(Node *&root, Node *&pt);
@@ -160,25 +160,36 @@ void RedBlackTree::fixViolation(Node *&root, Node *&pt) {
     root->color = BLACK;
 }
 
-Node* RedBlackTree::insertNodeBSTstyle(Node* node, string id, string title, string culture, int objectYear, string link) {
-
-    if (node == nullptr) {
-        return new Node();
+Node* RedBlackTree::BSTInsertID(Node* root, Node *pt)
+{
+    /* If the tree is empty, return a new node */
+    if (root == NULL)
+       return pt;
+ 
+    /* Otherwise, recur down the tree */
+    if (pt->work.getID() < root->work.getID())
+    {
+        root->left  = BSTInsertID(root->left, pt);
+        root->left->parent = root;
     }
-    else if (id == node->work.getID()) {
+    else if (pt->work.getID() > root->work.getID())
+    {
+        root->right = BSTInsertID(root->right, pt);
+        root->right->parent = root;
     }
-    else if (id < node->work.getID()) {
-        node->left = insertNodeBSTstyle(node->left, id, title, culture, objectYear, link);
-    }
-    else {
-        node->right = insertNodeBSTstyle(node->right, id, title, culture, objectYear, link);
-    }
-    return node;
+ 
+    /* return the (unchanged) node pointer */
+    return root;
 }
 
-void RedBlackTree::insert(ArtWork piece) {
-    Node* pt = new Node(piece);
-    root = insertNodeBSTstyle(root, piece.getID(), piece.getTitle(), piece.getCulture(), piece.getObjectYear(), piece.getLink());
+void RedBlackTree::insert(ArtWork piece)
+{
+    Node *pt = new Node(piece);
+ 
+    // Do a normal BST insert
+    root = BSTInsertID(root, pt);
+ 
+    // fix Red Black Tree violations
     fixViolation(root, pt);
 }
 
