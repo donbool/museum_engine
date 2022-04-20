@@ -48,17 +48,21 @@ class RedBlackTree {
         void fixViolation(Node *&root, Node *&pt);
         void insert(ArtWork piece);
 
-        void searchID(Node* root, string id, vector <string>& ids);
+        void searchID(Node* root, string id, vector <ArtWork>& result);
         void searchTitle(Node* root, string title, vector <string>& titles);
         void searchLink(Node* root, string link, vector <string>& links);
+	Node* getRoot();
 
         RedBlackTree();
         RedBlackTree(Node* node);
-
 };
 
 RedBlackTree::RedBlackTree() {
     root = nullptr;
+}
+
+Node* RedBlackTree::getRoot(){
+	return root;
 }
 
 //Citation: Inspired by Geeks4Geeks
@@ -193,14 +197,14 @@ void RedBlackTree::insert(ArtWork piece)
     fixViolation(root, pt);
 }
 
-void RedBlackTree::searchID(Node* root, string id, vector <string> &ids) { //return anything that matches
+void RedBlackTree::searchID(Node* root, string id, vector<ArtWork>& result) { //return anything that matches
 
     if (root != nullptr) {
         if (root->work.getID() == id) {
-            ids.push_back(root->work.getID());
+            result.push_back(root->work);
         }
-        searchID(root->left, id, ids);
-        searchID(root->right, id, ids);
+        searchID(root->left, id, result);
+        searchID(root->right, id, result);
     }
 }
 

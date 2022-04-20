@@ -35,6 +35,14 @@ using namespace std;
 
 * Create PDF report!
 *****/
+void printResult(vector<ArtWork>& result){
+	for(auto x : result){
+		cout << x.getID() << endl;
+		cout << x.getTitle() << endl;
+		cout << x.getLink() << endl;
+	}
+}
+
 void parseInput(string input, RedBlackTree& tree){
 	stringstream ss(input);
 	vector<string> fullCommand;
@@ -45,7 +53,7 @@ void parseInput(string input, RedBlackTree& tree){
 		fullCommand.push_back(commandWord);
 	}
 	
-	const vector<string> validCommands{"search", "remove", "insert", "recommend"};
+	const vector<string> validCommands{"search", "recommend"};
 
 	auto keyword = find(validCommands.begin(), validCommands.end(), fullCommand.at(0));
 
@@ -55,15 +63,17 @@ void parseInput(string input, RedBlackTree& tree){
 	}
 	int commandIndex = keyword - validCommands.begin();
 	if(commandIndex == 0){
-		cout << "searching" << endl;
+		if(fullCommand.size() < 2){
+			cout << "Bad input" << endl;
+		}
+		else{
+			cout << "searching for id: " << fullCommand[1] << endl;
+			vector<ArtWork> result;
+			tree.searchID(tree.getRoot(), fullCommand[1], result);
+			printResult(result);
+		}
 	}
 	else if(commandIndex == 1){
-		cout << "removing" << endl;
-	}
-	else if(commandIndex == 2){
-		cout << "inserting" << endl;
-	}
-	else if(commandIndex == 3){
 		cout << "recommending" << endl;
 	}
 }
@@ -76,8 +86,7 @@ void initRBT(RedBlackTree& tree){
 	getline(input, line);
 	auto start = chrono::high_resolution_clock::now();
 	int count = 0;
-	while(getline(input, line)){
-		cout << count << endl;
+	while(getline(input, line) && count < 7840){
 		count++;
 		tree.insert(ArtWork(line));
 	}
