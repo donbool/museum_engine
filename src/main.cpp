@@ -1,5 +1,6 @@
 #include<iostream>
-#include "splay.cpp"
+#include "artwork.cpp"
+//#include "splay.cpp"
 #include "redblacktree.cpp"
 #include <fstream>
 #include <vector>
