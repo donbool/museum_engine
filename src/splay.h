@@ -5,23 +5,20 @@
 #ifndef MUSEUM_ENGINE_SPLAY_H
 #define MUSEUM_ENGINE_SPLAY_H
 class Splay{
-    Node* rootID,rootTitle,rootLink;
+private:
+    Node* root;
 public:
     Splay();
-    Node* getRootID();
-    Node* getRootTitle();
-    Node* getRootLink();
+    Node* getRoot();
 
-    Node* rightRotate();
-    Node* leftRotate();
+    Node* rightRotate(Node* root);
+    Node* leftRotate(Node* root);
 
     Node* splayID(Node* root, string id);
     Node* splayTitle(Node* root, string id);
     Node* splayLink(Node* root, string id);
 
     Node* insertID(Node* root, ArtWork piece);
-    Node* insertTitle(Node* root, ArtWork piece);
-    Node* insertLink(Node* root, ArtWork piece);
 
     Node* searchID(Node* root, string id);
     Node* searchTitle(Node* root, string id);

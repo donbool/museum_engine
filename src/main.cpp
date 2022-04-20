@@ -1,7 +1,7 @@
 #include<iostream>
 #include "artwork.cpp"
-//#include "splay.cpp"
 #include "redblacktree.cpp"
+#include "splay.cpp"
 #include <fstream>
 #include <vector>
 #include <chrono>
@@ -44,7 +44,7 @@ void printResult(vector<ArtWork>& result){
 	}
 }
 
-void parseInput(string input, RedBlackTree& tree){
+void parseInput(string input, RedBlackTree& tree, Splay& splay){
 	stringstream ss(input);
 	vector<string> fullCommand;
 	
@@ -72,6 +72,11 @@ void parseInput(string input, RedBlackTree& tree){
 			vector<ArtWork> result;
 			tree.searchID(tree.getRoot(), fullCommand[1], result);
 			printResult(result);
+
+			result.clear();
+			auto node = splay.searchID(splay.getRoot(), fullCommand[1]);
+			result.push_back(node->work);
+			printResult(result);
 		}
 	}
 	else if(commandIndex == 1){
@@ -97,16 +102,38 @@ void initRBT(RedBlackTree& tree){
 	auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
 	cout << "Time taken for " << count << " insertions into RBT: " << duration.count() << " microseconds" <<  endl;
 }
+void initSplay(Splay& splay){
+	ifstream input;
+	string line;
+
+	input.open("artData.csv");
+
+	getline(input, line);
+	auto start = chrono::high_resolution_clock::now();
+	int count = 0;
+	while(getline(input, line)){
+		count++;
+		splay.insertID(splay.getRoot(), ArtWork(line));
+	}
+	auto stop = chrono::high_resolution_clock::now();
+	input.close();
+
+	auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+	cout << "Time taken for " << count << " insertions into Splay: " << duration.count() << " microseconds" <<  endl;
+}
 int main() {
 	cout << "Welcome to the Museum Engine" << endl;
 
 	RedBlackTree RBT;
 	initRBT(RBT);
+	
+	Splay splay;
+	initSplay(splay);
 
 	string command;
 	getline(cin, command);
 	while(command != "quit"){
-		parseInput(command, RBT);
+		parseInput(command, RBT, splay);
 		getline(cin, command);
 	}
 }
