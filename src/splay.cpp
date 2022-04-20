@@ -28,7 +28,7 @@ public:
     }
 };
 
-class SplayTree {
+class Splay {
     Node* rootID = nullptr;
     Node* rootTitle = nullptr;
     Node* rootLink = nullptr;
@@ -37,7 +37,7 @@ public:
     Node* getRootTitle(){return rootTitle;}
     Node* getRootLink(){return rootLink;}
 
-    SplayTree();
+    Splay();
     Node *rightRotate(Node *root)
     {
         Node *temp = root->left;
