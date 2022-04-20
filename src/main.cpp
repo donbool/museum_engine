@@ -1,5 +1,5 @@
 #include<iostream>
-//#include "splay.cpp"
+#include "splay.cpp"
 #include "redblacktree.cpp"
 #include <fstream>
 #include <vector>
