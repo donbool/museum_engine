@@ -18,6 +18,7 @@ public:
     Node* splayTitle(Node* root, string id);
     Node* splayLink(Node* root, string id);
 
+    Node* insNodeHelper(ArtWork piece);
     Node* insertID(Node* root, ArtWork piece);
 
     Node* searchID(Node* root, string id);

@@ -20,8 +20,11 @@ Node* Splay::leftRotate(Node *root)
     }
 Node* Splay::splayID(Node *root, string id) {
         ArtWork rootWork = root->work;
-        if (root == nullptr || rootWork.getID() == id)
+        if (root == nullptr || rootWork.getID() == id){
+            std::cout << "no root exists"
             return root;
+
+        }
 
         if (rootWork.getID() > id)
         {
@@ -187,25 +190,29 @@ Node* Splay::splayLink(Node *root, string link) {
         }
     }
 
+Node* Splay::insNodeHelper(ArtWork piece) {
+    Node* newNode = new Node();
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+    newNode->work = piece;
+    return newNode;
+}
 Node* Splay::insertID(Node *root, ArtWork piece) {
 
         if (root == nullptr) {
-            Node* pt = new Node(piece);
-            return pt; //if tree empty
+            return insNodeHelper(piece);//if tree empty
         }
 
         // Bring the closest leaf node to root
         root = splayID(root, piece.getID());
-        ArtWork rootWork = root->work;
+
         // If key is already present, then return
         if (root->work.getID() == piece.getID()) return root;
 
         // Otherwise allocate memory for new node
-        Node* pt = new Node(piece);
-        // If root's key is greater, make
-        // root as right child of newnode
-        // and copy the left child of root to newnode
-        if (rootWork.getID() > piece.getID())
+        Node* pt = insNodeHelper(piece);
+
+        if (root->work.getID() > piece.getID())
         {
             pt->right = root;
             pt->left = root->left;
