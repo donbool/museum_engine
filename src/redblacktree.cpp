@@ -114,12 +114,12 @@ Node* RedBlackTree::BSTInsertID(Node* root, Node *pt)
        return pt;
  
     /* Otherwise, recur down the tree */
-    if (pt->work.getID() < root->work.getID())
+    if (pt->work.getID().compare(root->work.getID()) < 0)
     {
         root->left  = BSTInsertID(root->left, pt);
         root->left->parent = root;
     }
-    else if (pt->work.getID() > root->work.getID())
+    else if (pt->work.getID().compare(root->work.getID()) > 0)
     {
         root->right = BSTInsertID(root->right, pt);
         root->right->parent = root;
