@@ -69,18 +69,26 @@ void parseInput(string input, RedBlackTree& tree, Splay& splay){
 		}
 		else{
 			cout << "searching for id: " << fullCommand[1] << endl;
+			auto start = chrono::high_resolution_clock::now();
 			vector<ArtWork> result;
 			tree.searchID(tree.getRoot(), fullCommand[1], result);
+			auto stop = chrono::high_resolution_clock::now();
+			auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
 			printResult(result);
-
+			cout << "Time to find in RBT: " << duration.count() << " microseconds" << endl; 
 			result.clear();
+
+
+			start = chrono::high_resolution_clock::now();
 			auto node = splay.search(fullCommand[1]);
 			if(node == nullptr){
 			    cout << "could not find Artwork" << endl;exit;
 			}
 			else {
-                result.push_back(node->work);
-                printResult(result);
+	       		        result.push_back(node->work);
+				stop = chrono::high_resolution_clock::now();
+       			        printResult(result);
+				cout << "Time to find in splay: " << duration.count() << " microseconds" << endl; 
             }
 		}
 	}
