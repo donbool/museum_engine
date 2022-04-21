@@ -74,9 +74,14 @@ void parseInput(string input, RedBlackTree& tree, Splay& splay){
 			printResult(result);
 
 			result.clear();
-			auto node = splay.searchID(splay.getRoot(), fullCommand[1]);
-			result.push_back(node->work);
-			printResult(result);
+			auto node = splay.search(fullCommand[1]);
+			if(node == nullptr){
+			    cout << "could not find Artwork" << endl;exit;
+			}
+			else {
+                result.push_back(node->work);
+                printResult(result);
+            }
 		}
 	}
 	else if(commandIndex == 1){
@@ -113,7 +118,7 @@ void initSplay(Splay& splay){
 	int count = 0;
 	while(getline(input, line)){
 		count++;
-		splay.insertID(splay.getRoot(), ArtWork(line));
+		splay.insertHelper(ArtWork(line));
 	}
 	auto stop = chrono::high_resolution_clock::now();
 	input.close();

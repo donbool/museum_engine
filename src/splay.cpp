@@ -4,47 +4,148 @@ Node* Splay::getRoot(){return root;}
 Splay::Splay(){
 	root = nullptr;
 }
-Node* Splay::rightRotate(Node *root)
+Node* Splay::rightRotate(Node *x)
     {
-        Node *temp = root->left;
-        root->left = temp->right;
-        temp->right = root;
-        return temp;
+        Node* y = x->left;
+        x->left = y->right;
+        if (y->right != nullptr) {
+            y->right->parent = x;
+        }
+        y->parent = x->parent;
+        if (x->parent == nullptr) {
+            this->root = y;
+        } else if (x == x->parent->right) {
+            x->parent->right = y;
+        } else {
+            x->parent->left = y;
+        }
+        y->right = x;
+        x->parent = y;
     }
-Node* Splay::leftRotate(Node *root)
-    {
-        Node *temp = root->right;
-        root->right = temp->left;
-        temp->left = root;
-        return temp;
+Node* Splay::leftRotate(Node* x)
+{
+    Node* y = x->left;
+    x->left = y->right;
+    if (y->right != nullptr) {
+        y->right->parent = x;
     }
-Node* Splay::splayID(Node *root, string id) {
+    y->parent = x->parent;
+    if (x->parent == nullptr) {
+        this->root = y;
+    } else if (x == x->parent->right) {
+        x->parent->right = y;
+    } else {
+        x->parent->left = y;
+    }
+        y->right = x;
+        x->parent = y;
+    }
+    void Splay::splayHelper(Node *x) {
+        while (x->parent) {
+            if (!x->parent->parent) {
+                if (x == x->parent->left) {
+                    // zig rotation
+                    rightRotate(x->parent);
+                } else {
+                    // zag rotation
+                    leftRotate(x->parent);
+                }
+            } else if (x == x->parent->left && x->parent == x->parent->parent->left) {
+                // zig-zig rotation
+                rightRotate(x->parent->parent);
+                rightRotate(x->parent);
+            } else if (x == x->parent->right && x->parent == x->parent->parent->right) {
+                // zag-zag rotation
+                leftRotate(x->parent->parent);
+                leftRotate(x->parent);
+            } else if (x == x->parent->right && x->parent == x->parent->parent->left) {
+                // zig-zag rotation
+                leftRotate(x->parent);
+                rightRotate(x->parent);
+            } else {
+                // zag-zig rotation
+                rightRotate(x->parent);
+                leftRotate(x->parent);
+            }
+        }
+}
+void Splay::insertHelper(ArtWork piece) {
+    // normal BST insert
+    Node* node = new Node(piece);
+    node->parent = nullptr;
+    node->left = nullptr;
+    node->right = nullptr;
+
+    Node* y = nullptr;
+    Node* x = this->root;
+
+    while (x != nullptr) {
+        y = x;
+        if (node->data < x->data) {
+            x = x->left;
+        } else {
+            x = x->right;
+        }
+    }
+
+    // y is parent of x
+    node->parent = y;
+    if (y == nullptr) {
+        root = node;
+    } else if (node->data < y->data) {
+        y->left = node;
+    } else {
+        y->right = node;
+    }
+
+    // splay the node
+    splay(node);
+}
+Node* Splay::searchHelper(Node* root, string id) {
+    if (node == nullptr) {
+        return node;
+    }
+
+    if (id < root->work.getID()) {
+        return searchTreeHelper(root->left, id);
+    }
+    return searchTreeHelper(root->right, id);
+}
+Node* Splay::search(string id) {
+    Node* found = searchHelper(this->root,id);
+    if(found == nullptr)
+        return found;
+    else{
+        splayHelper(found);
+        return found;
+    }
+}
+Node* Splay::splayID(Node *root, ArtWork piece) {
         ArtWork rootWork = root->work;
-        if (root == nullptr || rootWork.getID() == id){
-            std::cout << "no root exists"
+        if (root == nullptr || rootWork.getID() == piece.getID()){
             return root;
 
         }
 
-        if (rootWork.getID() > id)
+        if (rootWork.getID() > piece.getID())
         {
             if (root->left == nullptr) return root;
 
-            if (root->left->work.getID() > id)
+            if (root->left->work.getID() > piece.getID())
             {
                 // First recursively bring the
                 // key as root of left-left
-                root->left->left = splayID(root->left->left, id);
+                root->left->left = splayID(root->left->left, piece.getID());
 
                 // Do first rotation for root,
                 // second rotation is done after else
                 root = rightRotate(root);
             }
-            else if (root->left->work.getID() < id) // Zig-Zag (Left Right)
+            else if (root->left->work.getID() < piece.getID()) // Zig-Zag (Left Right)
             {
                 // First recursively bring
                 // the key as root of left-right
-                root->left->right = splayID(root->left->right, id);
+                root->left->right = splayID(root->left->right, piece.getID());
 
                 // Do first rotation for root->left
                 if (root->left->right != nullptr)
@@ -60,17 +161,17 @@ Node* Splay::splayID(Node *root, string id) {
             if (root->right == nullptr) return root;
 
             // Zag-Zig (Right Left)
-            if (root->right->work.getID() > id)
+            if (root->right->work.getID() > piece.getID())
             {
-                root->right->left = splayID(root->right->left, id);
+                root->right->left = splayID(root->right->left, piece.getID());
 
                 // Do first rotation for root->right
                 if (root->right->left != nullptr)
                     root->right = rightRotate(root->right);
             }
-            else if (root->right->work.getID() < id)// Zag-Zag (Right Right)
+            else if (root->right->work.getID() < piece.getID())// Zag-Zag (Right Right)
             {
-                root->right->right = splayID(root->right->right, id);
+                root->right->right = splayID(root->right->right, piece.getID());
                 root = leftRotate(root);
             }
 
@@ -191,10 +292,9 @@ Node* Splay::splayLink(Node *root, string link) {
     }
 
 Node* Splay::insNodeHelper(ArtWork piece) {
-    Node* newNode = new Node();
+    Node* newNode = new Node(piece);
     newNode->left = nullptr;
     newNode->right = nullptr;
-    newNode->work = piece;
     return newNode;
 }
 Node* Splay::insertID(Node *root, ArtWork piece) {

@@ -5,14 +5,18 @@
 #ifndef MUSEUM_ENGINE_SPLAY_H
 #define MUSEUM_ENGINE_SPLAY_H
 class Splay{
-private:
-    Node* root;
 public:
+    Node* root;
     Splay();
     Node* getRoot();
 
-    Node* rightRotate(Node* root);
-    Node* leftRotate(Node* root);
+    Node* rightRotate(Node* x);
+    Node* leftRotate(Node* x);
+
+    void splayHelper(Node* x);
+    void insertHelper(ArtWork piece);
+    Node* search(string id);
+    Node* searchHelper(Node* root, string id);
 
     Node* splayID(Node* root, string id);
     Node* splayTitle(Node* root, string id);
