@@ -4,7 +4,7 @@ Node* Splay::getRoot(){return root;}
 Splay::Splay(){
 	root = nullptr;
 }
-Node* Splay::rightRotate(Node *x)
+void Splay::rightRotate(Node *x)
     {
         Node* y = x->left;
         x->left = y->right;
@@ -22,7 +22,7 @@ Node* Splay::rightRotate(Node *x)
         y->right = x;
         x->parent = y;
     }
-Node* Splay::leftRotate(Node* x)
+void Splay::leftRotate(Node* x)
 {
     Node* y = x->left;
     x->left = y->right;
@@ -99,7 +99,7 @@ void Splay::insertHelper(ArtWork piece) {
     }
 
     // splay the node
-    splay(node);
+    splayHelper(node);
 }
 Node* Splay::searchHelper(Node* root, string id) {
     if (root == nullptr) {
@@ -120,7 +120,7 @@ Node* Splay::search(string id) {
         return found;
     }
 }
-Node* Splay::splayID(Node *root, ArtWork piece) {
+/*Node* Splay::splayID(Node *root, ArtWork piece) {
         ArtWork rootWork = root->work;
         if (root == nullptr || rootWork.getID() == piece.getID()){
             return root;
@@ -178,7 +178,8 @@ Node* Splay::splayID(Node *root, ArtWork piece) {
             return (root->right == nullptr)? root: leftRotate(root);
         }
     }
-Node* Splay::splayTitle(Node *root, string title) {
+    */
+/*Node* Splay::splayTitle(Node *root, string title) {
         ArtWork rootWork = root->work;
         if (root == nullptr || rootWork.getTitle() == title)
             return root;
@@ -234,7 +235,8 @@ Node* Splay::splayTitle(Node *root, string title) {
             return (root->right == nullptr)? root: leftRotate(root);
         }
     }
-Node* Splay::splayLink(Node *root, string link) {
+    */
+/*Node* Splay::splayLink(Node *root, string link) {
         ArtWork rootWork = root->work;
         if (root == nullptr || rootWork.getLink() == link)
             return root;
@@ -290,6 +292,7 @@ Node* Splay::splayLink(Node *root, string link) {
             return (root->right == nullptr)? root: leftRotate(root);
         }
     }
+    */
 
 Node* Splay::insNodeHelper(ArtWork piece) {
     Node* newNode = new Node(piece);
@@ -297,7 +300,7 @@ Node* Splay::insNodeHelper(ArtWork piece) {
     newNode->right = nullptr;
     return newNode;
 }
-Node* Splay::insertID(Node *root, ArtWork piece) {
+/*Node* Splay::insertID(Node *root, ArtWork piece) {
 
         if (root == nullptr) {
             return insNodeHelper(piece);//if tree empty
@@ -328,6 +331,7 @@ Node* Splay::insertID(Node *root, ArtWork piece) {
 
         return pt; // pt becomes new root
     }
+    */
 /*Node* Splay::insertTitle(Node *root, ArtWork piece) {
 
         if (root == nullptr) {
@@ -397,7 +401,7 @@ Node* Splay::insertID(Node *root, ArtWork piece) {
         return pt; // pt becomes new root
     }*/
 
-Node* Splay::searchID(Node *root, string id) {
+/*Node* Splay::searchID(Node *root, string id) {
         return splayID(root, id);
     }
 
@@ -408,6 +412,7 @@ Node* Splay::searchTitle(Node *root, string title) {
 Node* Splay::searchLink(Node *root, string link) {
         return splayLink(root, link);
     }
+    */
 
 
 /* considering a splay tree works like any other BST with the priority of frequency, we need to construct three trees:
