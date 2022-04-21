@@ -38,32 +38,31 @@ void Splay::leftRotate(Node* x){
         y->right = x;
         x->parent = y;
     }
-    void Splay::splayHelper(Node *x) {
-        while (x->parent) {
-            if (!x->parent->parent) {
-                if (x == x->parent->left) {
-                    // zig rotation
-                    rightRotate(x->parent);
-                } else {
-                    // zag rotation
-                    leftRotate(x->parent);
-                }
-            } else if (x == x->parent->left && x->parent == x->parent->parent->left) {
-                // zig-zig rotation
-                rightRotate(x->parent->parent);
-                rightRotate(x->parent);
-            } else if (x == x->parent->right && x->parent == x->parent->parent->right) {
-                // zag-zag rotation
-                leftRotate(x->parent->parent);
-                leftRotate(x->parent);
-            } else if (x == x->parent->right && x->parent == x->parent->parent->left) {
-                // zig-zag rotation
-                leftRotate(x->parent);
-                rightRotate(x->parent);
+void Splay::splayHelper(Node *root) {
+    while (root->parent && !root) {
+        if (!root->parent->parent) {
+            //simply single rotations
+            if (root == root->parent->left) {
+                rightRotate(root->parent);
             } else {
-                // zag-zig rotation
-                rightRotate(x->parent);
-                leftRotate(x->parent);
+                leftRotate(root->parent);
+            }
+        } else if (root == root->parent->left && root->parent == root->parent->parent->left) {
+            //RR rotation
+            rightRotate(root->parent->parent);
+            rightRotate(root->parent);
+        } else if (root == root->parent->right && root->parent == root->parent->parent->right) {
+            //LL Rotation
+            leftRotate(root->parent->parent);
+            leftRotate(root->parent);
+        } else if (root == root->parent->right && root->parent == root->parent->parent->left) {
+            //LR Rotation
+            leftRotate(root->parent);
+            rightRotate(root->parent);
+        } else {
+            //RL rotation
+            rightRotate(root->parent);
+            leftRotate(root->parent);
             }
         }
 }
@@ -98,7 +97,7 @@ void Splay::insertHelper(ArtWork piece){
     }
 
     // splay the node
-    //splayHelper(node);
+    splayHelper(node);
 }
 Node* Splay::searchHelper(Node* root, string id){
     if(root == nullptr || root->work.getID().compare(id) == 0){
@@ -115,7 +114,7 @@ Node* Splay::search(string id){
     if(found == nullptr)
         return found;
     else{
-        //splayHelper(found);
+        splayHelper(found);
         return found;
     }
 }
