@@ -99,10 +99,10 @@ void Splay::insertHelper(ArtWork piece) {
     }
 
     // splay the node
-    splayHelper(node);
+    //splayHelper(node);
 }
 Node* Splay::searchHelper(Node* root, string id) {
-    if (root == nullptr) {
+    if (root == nullptr || root->work.getID().compare(id) == 0) {
         return root;
     }
 
@@ -116,7 +116,7 @@ Node* Splay::search(string id) {
     if(found == nullptr)
         return found;
     else{
-        splayHelper(found);
+        //splayHelper(found);
         return found;
     }
 }
