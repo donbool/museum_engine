@@ -4,8 +4,7 @@ Node* Splay::getRoot(){return root;}
 Splay::Splay(){
 	root = nullptr;
 }
-void Splay::rightRotate(Node *x)
-    {
+void Splay::rightRotate(Node *x){
         Node* y = x->left;
         x->left = y->right;
         if (y->right != nullptr) {
@@ -21,9 +20,8 @@ void Splay::rightRotate(Node *x)
         }
         y->right = x;
         x->parent = y;
-    }
-void Splay::leftRotate(Node* x)
-{
+}
+void Splay::leftRotate(Node* x){
     Node* y = x->left;
     x->left = y->right;
     if (y->right != nullptr) {
@@ -69,7 +67,7 @@ void Splay::leftRotate(Node* x)
             }
         }
 }
-void Splay::insertHelper(ArtWork piece) {
+void Splay::insertHelper(ArtWork piece){
     // normal BST insert
     Node* node = new Node(piece);
     node->parent = nullptr;
@@ -79,39 +77,40 @@ void Splay::insertHelper(ArtWork piece) {
     Node* y = nullptr;
     Node* x = this->root;
 
-    while (x != nullptr) {
+    while (x != nullptr){
         y = x;
-        if (node->work.getID() < x->work.getID()) {
+        if(node->work.getID() < x->work.getID()) {
             x = x->left;
         } else {
             x = x->right;
         }
     }
 
-    // y is parent of x
     node->parent = y;
-    if (y == nullptr) {
+    if(y == nullptr){
         root = node;
-    } else if (node->work.getID() < y->work.getID()) {
+    }
+    else if(node->work.getID() < y->work.getID()){
         y->left = node;
-    } else {
+    }
+    else{
         y->right = node;
     }
 
     // splay the node
     //splayHelper(node);
 }
-Node* Splay::searchHelper(Node* root, string id) {
-    if (root == nullptr || root->work.getID().compare(id) == 0) {
+Node* Splay::searchHelper(Node* root, string id){
+    if(root == nullptr || root->work.getID().compare(id) == 0){
         return root;
     }
 
-    if (id < root->work.getID()) {
+    if(id < root->work.getID()){
         return searchHelper(root->left, id);
     }
     return searchHelper(root->right, id);
 }
-Node* Splay::search(string id) {
+Node* Splay::search(string id){
     Node* found = searchHelper(this->root,id);
     if(found == nullptr)
         return found;
@@ -294,7 +293,7 @@ Node* Splay::search(string id) {
     }
     */
 
-Node* Splay::insNodeHelper(ArtWork piece) {
+Node* Splay::insNodeHelper(ArtWork piece){
     Node* newNode = new Node(piece);
     newNode->left = nullptr;
     newNode->right = nullptr;
