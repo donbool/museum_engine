@@ -81,7 +81,7 @@ void Splay::insertHelper(ArtWork piece) {
 
     while (x != nullptr) {
         y = x;
-        if (node->data < x->data) {
+        if (node->work.getID() < x->work.getID()) {
             x = x->left;
         } else {
             x = x->right;
@@ -92,7 +92,7 @@ void Splay::insertHelper(ArtWork piece) {
     node->parent = y;
     if (y == nullptr) {
         root = node;
-    } else if (node->data < y->data) {
+    } else if (node->work.getID() < y->work.getID()) {
         y->left = node;
     } else {
         y->right = node;
@@ -102,14 +102,14 @@ void Splay::insertHelper(ArtWork piece) {
     splay(node);
 }
 Node* Splay::searchHelper(Node* root, string id) {
-    if (node == nullptr) {
-        return node;
+    if (root == nullptr) {
+        return root;
     }
 
     if (id < root->work.getID()) {
-        return searchTreeHelper(root->left, id);
+        return searchHelper(root->left, id);
     }
-    return searchTreeHelper(root->right, id);
+    return searchHelper(root->right, id);
 }
 Node* Splay::search(string id) {
     Node* found = searchHelper(this->root,id);
